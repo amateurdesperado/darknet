@@ -79,8 +79,8 @@ def YOLO():
                     pass
         except Exception:
             pass
-    #cap = cv2.VideoCapture(0)
-    cap = cv2.VideoCapture("test.mp4")
+    # cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture("/home/u2064/werk/image_recognition/cows_help.mp4")
     cap.set(3, 1280)
     cap.set(4, 720)
     out = cv2.VideoWriter(
