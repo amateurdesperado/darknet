@@ -25,12 +25,12 @@ def cvDrawBoxes(detections, img):
             float(x), float(y), float(w), float(h))
         pt1 = (xmin, ymin)
         pt2 = (xmax, ymax)
-        cv2.rectangle(img, pt1, pt2, (255, 0, 0), 1)
+        cv2.rectangle(img, pt1, pt2, (255, 0, 255), 1)
         cv2.putText(img, 'cow',
                     # detection[0].decode() +
                     # " [" + str(round(detection[1] * 100, 2)) + "]",
                     (pt1[0], pt1[1] - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
-                    [255, 0, 0], 2)
+                    [255, 0, 255], 2)
     return img
 
 
@@ -108,7 +108,9 @@ def YOLO():
             darknet.copy_image_from_bytes(darknet_image, frame_resized.tobytes())
 
             detections = darknet.detect_image(netMain, metaMain, darknet_image, thresh=0.5)
-            image = cvDrawBoxes(detections, frame_resized)
+
+            # frame_higher_res = cv2.resize(frame_resized, (int(cap.get(3)), int(cap.get(4))))
+            image = cvDrawBoxes(detections, frame_rgb)
             image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
             print(1/(time.time()-prev_time))
 
