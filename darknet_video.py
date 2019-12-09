@@ -109,8 +109,8 @@ def YOLO():
 
             detections = darknet.detect_image(netMain, metaMain, darknet_image, thresh=0.5)
 
-            # frame_higher_res = cv2.resize(frame_resized, (int(cap.get(3)), int(cap.get(4))))
-            image = cvDrawBoxes(detections, frame_rgb)
+            frame_higher_res = cv2.resize(frame_resized, (int(cap.get(3)), int(cap.get(4))), interpolation=cv2.INTER_LINEAR)
+            image = cvDrawBoxes(detections, frame_higher_res)
             image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
             print(1/(time.time()-prev_time))
 
