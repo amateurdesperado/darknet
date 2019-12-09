@@ -25,12 +25,12 @@ def cvDrawBoxes(detections, img):
             float(x), float(y), float(w), float(h))
         pt1 = (xmin, ymin)
         pt2 = (xmax, ymax)
-        cv2.rectangle(img, pt1, pt2, (0, 255, 0), 1)
-        cv2.putText(img,
-                    detection[0].decode() +
-                    " [" + str(round(detection[1] * 100, 2)) + "]",
+        cv2.rectangle(img, pt1, pt2, (255, 0, 0), 1)
+        cv2.putText(img, 'cow',
+                    # detection[0].decode() +
+                    # " [" + str(round(detection[1] * 100, 2)) + "]",
                     (pt1[0], pt1[1] - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
-                    [0, 255, 0], 2)
+                    [255, 0, 0], 2)
     return img
 
 
@@ -86,7 +86,7 @@ def YOLO():
 
     fourcc = cv2.VideoWriter_fourcc(*'XVID')
     out = cv2.VideoWriter(
-        'output.avi', fourcc, 10.0,
+        'output.avi', fourcc, 20.0,
         (darknet.network_width(netMain), darknet.network_height(netMain)))
         # 20.0, (int(cap.get(3)), int(cap.get(4))))
     print("Starting the YOLO loop...")
@@ -107,7 +107,7 @@ def YOLO():
 
             darknet.copy_image_from_bytes(darknet_image, frame_resized.tobytes())
 
-            detections = darknet.detect_image(netMain, metaMain, darknet_image, thresh=0.25)
+            detections = darknet.detect_image(netMain, metaMain, darknet_image, thresh=0.5)
             image = cvDrawBoxes(detections, frame_resized)
             image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
             print(1/(time.time()-prev_time))
