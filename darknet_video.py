@@ -86,8 +86,9 @@ def YOLO():
 
     fourcc = cv2.VideoWriter_fourcc(*'XVID')
     out = cv2.VideoWriter(
-        'output.avi', fourcc, 10.0,
-        (darknet.network_width(netMain), darknet.network_height(netMain)))
+        'output.avi', fourcc, # 10.0,
+        # (darknet.network_width(netMain), darknet.network_height(netMain)))
+        20.0, (int(cap.get(3)), int(cap.get(4))))
     print("Starting the YOLO loop...")
 
     # Create an image we reuse for each detect
