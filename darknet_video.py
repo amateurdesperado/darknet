@@ -91,7 +91,7 @@ def YOLO():
     # Create an image we reuse for each detect
     darknet_image = darknet.make_image(darknet.network_width(netMain),
                                     darknet.network_height(netMain),3)
-    while True:
+    while cap.isOpened():
         prev_time = time.time()
         ret, frame_read = cap.read()
 
@@ -110,8 +110,11 @@ def YOLO():
             print(1/(time.time()-prev_time))
         # cv2.imshow('Demo', image)
             cv2.waitKey(3)
+        else:
+            break
     cap.release()
     out.release()
+    cv2.destroyAllWindows()
 
 if __name__ == "__main__":
     YOLO()
