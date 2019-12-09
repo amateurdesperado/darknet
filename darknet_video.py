@@ -83,8 +83,10 @@ def YOLO():
     cap = cv2.VideoCapture('/content/drive/My Drive/image_recognition/cows_help.mp4')
     cap.set(3, 1280)
     cap.set(4, 720)
+
+    fourcc = cv2.VideoWriter_fourcc(*'XVID')
     out = cv2.VideoWriter(
-        "output.avi", cv2.VideoWriter_fourcc(*"MJPG"), 10.0,
+        'output.avi', fourcc, 10.0,
         (darknet.network_width(netMain), darknet.network_height(netMain)))
     print("Starting the YOLO loop...")
 
