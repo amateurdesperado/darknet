@@ -86,7 +86,7 @@ def YOLO():
 
     fourcc = cv2.VideoWriter_fourcc(*'XVID')
     out = cv2.VideoWriter(
-        'output.avi', fourcc, 20.0,
+        'output.avi', fourcc, 30.0,
         # (darknet.network_width(netMain), darknet.network_height(netMain)))
         (int(cap.get(3)), int(cap.get(4))))
     print("Starting the YOLO loop...")
@@ -100,12 +100,12 @@ def YOLO():
 
         if ret:
             frame_rgb = cv2.cvtColor(frame_read, cv2.COLOR_BGR2RGB)
-            frame_resized = cv2.resize(frame_rgb,
-                                   (darknet.network_width(netMain),
-                                    darknet.network_height(netMain)),
-                                   interpolation=cv2.INTER_LINEAR)
+            # frame_resized = cv2.resize(frame_rgb,
+            #                        (darknet.network_width(netMain),
+            #                         darknet.network_height(netMain)),
+            #                        interpolation=cv2.INTER_LINEAR)
 
-            darknet.copy_image_from_bytes(darknet_image, frame_resized.tobytes())
+            darknet.copy_image_from_bytes(darknet_image, frame_rgb.tobytes())
 
             detections = darknet.detect_image(netMain, metaMain, darknet_image, thresh=0.5)
 
