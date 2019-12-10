@@ -87,30 +87,33 @@ def YOLO():
     fourcc = cv2.VideoWriter_fourcc(*'XVID')
     out = cv2.VideoWriter(
         'output.avi', fourcc, 30.0,
-        # (darknet.network_width(netMain), darknet.network_height(netMain)))
-        (int(cap.get(3)), int(cap.get(4))))
+        (darknet.network_width(netMain), darknet.network_height(netMain)))
+        # (int(cap.get(3)), int(cap.get(4))))
     print("Starting the YOLO loop...")
 
     # Create an image we reuse for each detect
     darknet_image = darknet.make_image(darknet.network_width(netMain),
-                                    darknet.network_height(netMain),3)
+                                       darknet.network_height(netMain), 3)
     while cap.isOpened():
         prev_time = time.time()
         ret, frame_read = cap.read()
 
         if ret:
             frame_rgb = cv2.cvtColor(frame_read, cv2.COLOR_BGR2RGB)
-            # frame_resized = cv2.resize(frame_rgb,
-            #                        (darknet.network_width(netMain),
-            #                         darknet.network_height(netMain)),
-            #                        interpolation=cv2.INTER_LINEAR)
+            frame_resized = cv2.resize(frame_rgb,
+                                   (darknet.network_width(netMain),
+                                    darknet.network_height(netMain)),
+                                   interpolation=cv2.INTER_LINEAR)
+            print(darknet.network_width(netMain), 'first dim')
+            print(darknet.network_height(netMain), 'second dim')
 
-            darknet.copy_image_from_bytes(darknet_image, frame_rgb.tobytes())
+            darknet.copy_image_from_bytes(darknet_image, frame_resized.tobytes())
 
             detections = darknet.detect_image(netMain, metaMain, darknet_image, thresh=0.5)
+            print(type(detections))
 
             # frame_higher_res = cv2.resize(frame_resized, (int(cap.get(3)), int(cap.get(4))), interpolation=cv2.INTER_LINEAR)
-            image = cvDrawBoxes(detections, frame_rgb)
+            image = cvDrawBoxes(detections, frame_resized)
             image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
             print(1/(time.time()-prev_time))
 
