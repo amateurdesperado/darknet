@@ -90,7 +90,7 @@ def YOLO():
 
     fourcc = cv2.VideoWriter_fourcc(*'XVID')
     out = cv2.VideoWriter(
-        'output.avi', fourcc, 30.0,
+        'output.avi', fourcc, 60.0,
         # (darknet.network_width(netMain), darknet.network_height(netMain)))
         (1280, 720))
     print("Starting the YOLO loop...")
