@@ -8,10 +8,14 @@ import time
 import darknet
 
 def convertBack(x, y, w, h):
-    xmin = int(round(x - (w / 2)))
-    xmax = int(round(x + (w / 2)))
-    ymin = int(round(y - (h / 2)))
-    ymax = int(round(y + (h / 2)))
+
+    x_scale = 1280/416
+    y_scale = 720/416
+
+    xmin = int(round(x_scale * (x - (w / 2))))
+    xmax = int(round(x_scale * (x + (w / 2))))
+    ymin = int(round(y_scale * (y - (h / 2))))
+    ymax = int(round(y_scale * (y + (h / 2))))
     return xmin, ymin, xmax, ymax
 
 
@@ -87,8 +91,8 @@ def YOLO():
     fourcc = cv2.VideoWriter_fourcc(*'XVID')
     out = cv2.VideoWriter(
         'output.avi', fourcc, 30.0,
-        (darknet.network_width(netMain), darknet.network_height(netMain)))
-        # (int(cap.get(3)), int(cap.get(4))))
+        # (darknet.network_width(netMain), darknet.network_height(netMain)))
+        (int(cap.get(3)), int(cap.get(4))))
     print("Starting the YOLO loop...")
 
     # Create an image we reuse for each detect
@@ -104,16 +108,13 @@ def YOLO():
                                    (darknet.network_width(netMain),
                                     darknet.network_height(netMain)),
                                    interpolation=cv2.INTER_LINEAR)
-            print(darknet.network_width(netMain), 'first dim')
-            print(darknet.network_height(netMain), 'second dim')
 
             darknet.copy_image_from_bytes(darknet_image, frame_resized.tobytes())
 
             detections = darknet.detect_image(netMain, metaMain, darknet_image, thresh=0.5)
-            print(type(detections))
 
-            # frame_higher_res = cv2.resize(frame_resized, (int(cap.get(3)), int(cap.get(4))), interpolation=cv2.INTER_LINEAR)
-            image = cvDrawBoxes(detections, frame_resized)
+            frame_higher_res = cv2.resize(frame_resized, (int(cap.get(3)), int(cap.get(4))), interpolation=cv2.INTER_LINEAR)
+            image = cvDrawBoxes(detections, frame_higher_res)
             image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
             print(1/(time.time()-prev_time))
 
